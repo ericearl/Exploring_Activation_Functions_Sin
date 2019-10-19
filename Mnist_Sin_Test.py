@@ -46,7 +46,7 @@ for i in range(1, num_tests+1):
     history = {}
     num_epochs = 100
     for j in range(len(activations)):
-        name = activations[i]
+        name = activations[j]
         path = save_path + str(i) + '/model_architecture_' + name + '.txt'
         with open(path, 'r') as f:
             model = model_from_json(f.read())
