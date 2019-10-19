@@ -5,10 +5,11 @@ from keras.layers import Dense, Conv2D, Input
 from keras.datasets import mnist
 from keras.utils import to_categorical
 from keras.callbacks import EarlyStopping
+from keras.utils.generic_utils import get_custom_objects
+from keras.layers import Activation
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
 import os
 import simplejson as json
 
@@ -32,6 +33,9 @@ x_train, x_val, y_train, y_val = train_test_split(x_train,
 # Define the sin activation function
 def sin(x):
     return K.sin(x)
+
+get_custom_objects().update({'sin': Activation(sin)})
+
 
 # Save information about this test
 save_path = './tests/test_'
