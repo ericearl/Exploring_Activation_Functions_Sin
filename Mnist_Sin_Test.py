@@ -37,7 +37,7 @@ def sin(x):
 save_path = './tests/test_'
 num_tests = 9
 activations = ['relu', 'sigmoid', 'tanh', 'sin']
-for i in range(num_tests):
+for i in range(1, num_tests+1):
     '''
     We are going to repeat the process of building the model using each
     activation function and training the model. After this is done for all
@@ -47,10 +47,9 @@ for i in range(num_tests):
     num_epochs = 100
     for j in range(len(activations)):
         name = activations[i]
-        path = save_path + str(i) + '/model_architecture_' + name '.txt'
-        with open(path) as f:
-            json_model = json.load(f)
-            model = model_from_json(json_model)
+        path = save_path + str(i) + '/model_architecture_' + name + '.txt'
+        with open(path, 'r') as f:
+            model = model_from_json(f.read())
 
             model.compile(optimizer='adam',
                             metrics=['accuracy'],
