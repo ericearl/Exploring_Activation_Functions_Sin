@@ -1,6 +1,6 @@
 # Imports and what not
 from keras import backend as K
-from keras.models import Model
+from keras.models import Model, model_from_json
 from keras.layers import Dense, Conv2D, Input
 from keras.datasets import mnist
 from keras.utils import to_categorical
@@ -34,49 +34,35 @@ def sin(x):
     return K.sin(x)
 
 # Save information about this test
-save_path = './tests/'
-test_folder = 'test_1'
+save_path = './tests/test_'
+num_tests = 9
+activations = ['relu', 'sigmoid', 'tanh', 'sin']
+for i in range(num_tests):
+    '''
+    We are going to repeat the process of building the model using each
+    activation function and training the model. After this is done for all
+    activation functions we will compare the results.
+    '''
+    history = {}
+    num_epochs = 100
+    for j in range(len(activations)):
+        name = activations[i]
+        path = save_path + str(i) + '/model_architecture_' + name '.txt'
+        with open(path) as f:
+            json_model = json.load(f)
+            model = model_from_json(json_model)
 
-if not os.path.exists(save_path + test_folder):
-    os.mkdir(save_path + test_folder)
+            model.compile(optimizer='adam',
+                            metrics=['accuracy'],
+                            loss='mean_squared_error')
 
-'''
-We are going to repeat the process of building the model using each activation
-function and training the model. After this is done for all activation functions
-we will compare the results.
-'''
-activations = ['relu', 'sigmoid', 'tanh', sin]
-history = {}
-num_epochs = 20
-for i in range(len(activations)):
-    name = activations[i] if i != len(activations)-1 else 'sin'
+            # Fit the model
+            history[name] = model.fit(x_train,
+                                        y_train,
+                                        validation_data=(x_val, y_val),
+                                        epochs=num_epochs,
+                                        batch_size=64,
+                                        verbose=0).history
 
-    # Define the model architecture
-    input = Input(shape=(784,))
-    x = Dense(units=100, activation=activations[i])(input)
-    x = Dense(units=50, activation=activations[i])(x)
-    x = Dense(units=10, activation='softmax')(x)
-
-    # Create the model and compile
-    model = Model(inputs=input, outputs=x)
-    model.compile(optimizer='adam',
-                    metrics=['accuracy'],
-                    loss='mean_squared_error')
-
-    # Fit the model
-    history[name] = model.fit(x_train,
-                                y_train,
-                                validation_data=(x_val, y_val),
-                                epochs=num_epochs,
-                                batch_size=64,
-                                verbose=0).history
-
-    # Save the model
-    fp = save_path+test_folder+'/model_architecture_' + name + '.txt'
-    with open(fp, 'w') as f:
-        f.write(json.dumps(json.loads(model.to_json()),
-                            indent=4,
-                            sort_keys=True))
-
-df = pd.DataFrame(history)
-df.to_csv(save_path+test_folder+'/training_history.csv')
+    df = pd.DataFrame(history)
+    df.to_csv(save_path + str(i) + '/training_history.csv')
