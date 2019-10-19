@@ -13,6 +13,11 @@ from sklearn.model_selection import train_test_split
 import os
 import simplejson as json
 
+'''
+Here I am actually fitting the architectures and doing some tests on how each
+model compares.
+'''
+
 # Load and Prepare data
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 

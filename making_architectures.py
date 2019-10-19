@@ -11,6 +11,13 @@ import matplotlib.pyplot as plt
 import os
 import simplejson as json
 
+'''
+This class is used to build the architecture of the models I want to test
+then saves them in one of the test folders without testing them. I will then
+go through all the architectures in all the test folders and actually fit the
+models and evaluate them.
+'''
+
 # Define the sin activation function
 def sin(x):
     return K.sin(x)
