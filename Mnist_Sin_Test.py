@@ -14,8 +14,9 @@ import os
 import simplejson as json
 
 '''
-Here I am actually fitting the architectures and doing some tests on how each
-model compares.
+Here I am actually fitting the architectures and storing the history object
+to file where I will later visualize the validation loss of eat and see how they
+all compare
 '''
 
 # Load and Prepare data

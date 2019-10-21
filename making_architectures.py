@@ -1,3 +1,4 @@
+# Imports
 from keras import backend as K
 from keras.models import Model, model_from_json
 from keras.layers import Dense, Conv2D, Input
@@ -23,7 +24,7 @@ def sin(x):
     return K.sin(x)
 
 save_path = './tests/'
-test_folder = 'test_9'
+test_folder = 'test_1'
 activations = ['relu', 'sigmoid', 'tanh', sin]
 history = {}
 num_epochs = 20
